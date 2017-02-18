@@ -8,3 +8,4 @@ Alpha:
       * Start time
       * End time (or deployment count)
       * Single or multizone deployment
+      * Ignore any errors when running queryasyncjob (upto 3 times?)
