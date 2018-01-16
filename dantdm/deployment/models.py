@@ -17,11 +17,11 @@ class Endpoint(models.Model):
         (CLOUDSTACK, 'CloudStack'),
     )
 
-    name = models.CharField(length=100)
+    name = models.CharField(max_length=100)
     endpoint_url = models.URLField(blank=False)
     endpoint_type = models.CharField(max_length=3, choices=ENDPOINT_CHOICES, default=CLOUDSTACK)
-    api_key = models.CharField(length=256, blank=False)
-    secret_key = models.CharField(length=256, blank=False)
+    api_key = models.CharField(max_length=256, blank=False)
+    secret_key = models.CharField(max_length=256, blank=False)
     created = models.DateTimeField('date created')
     modified = models.DateTimeField('date modified')
 
@@ -29,11 +29,23 @@ class Endpoint(models.Model):
         return '%s / %s' % (self.name, self.endpoint_type)
 
 
+class Endpoint_MetaData(models.Model):
+    """
+    This class contains records which are used during deployment tests
+    """
+    endpoint = models.ForeignKey(Endpoint, on_delete=models.CASCADE)
+    name = models.CharField(max_length=256)
+    value = models.CharField(max_length=256)
+
+    def __str__(self):
+        return '%s / %s=%s' % (self.endpoint.name, self.name, self.value)
+
+
 class Deployment(models.Model):
     """
     The class which holds all the details about a new deployment test.
     """
-    name = models.CharField(length=100)
+    name = models.CharField(max_length=100)
     endpoint = models.ForeignKey(Endpoint, on_delete=models.CASCADE)
     created = models.DateTimeField('date created')
     start_date = models.DateTimeField()
