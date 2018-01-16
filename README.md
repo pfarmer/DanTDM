@@ -1,7 +1,7 @@
 # Dan The Deployment Machine
 A django app to run mass deployment tests for cloud providers
 
-Alpha: 
+Alpha:
   * Celery to maintain and control the jobs
   * Supports Apache CloudStack
     * Configurable deployments options
