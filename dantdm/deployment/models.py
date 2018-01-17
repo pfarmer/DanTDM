@@ -29,9 +29,10 @@ class Endpoint(models.Model):
         return '%s / %s' % (self.name, self.endpoint_type)
 
 
-class Endpoint_MetaData(models.Model):
+class EndpointMetaData(models.Model):
     """
-    This class contains records which are used during deployment tests
+    This class contains records which are used during deployment tests, these values can be
+    overriden by the Deployment_Metadata
     """
     endpoint = models.ForeignKey(Endpoint, on_delete=models.CASCADE)
     name = models.CharField(max_length=256)
@@ -48,12 +49,30 @@ class Deployment(models.Model):
     name = models.CharField(max_length=100)
     endpoint = models.ForeignKey(Endpoint, on_delete=models.CASCADE)
     created = models.DateTimeField('date created')
-    start_date = models.DateTimeField()
+    start_date = models.DateTimeField('start date and time')
     started = models.BooleanField(default=False)
-    vm_count = models.IntegerField(default=100)
+    num_vms = models.IntegerField(default=100)
+    vm_count = models.IntegerField(default=0)
+    duration = models.IntegerField(default=0)
+    avg_deployment_time = models.IntegerField(default=0)
+    ready = models.BooleanField(default=False)
+    complete = models.BooleanField(default=False)
 
     def __str__(self):
         return '%s / %s / %s' % (self.name, self.endpoint.name, self.endpoint.endpoint_type)
+
+
+class DeploymentMetaData(models.Model):
+    """
+    This class contains records which are used during deployment tests, deployment metadata is more specific
+    than Endpoint metadata, so overrides it.
+    """
+    deployment = models.ForeignKey(Deployment, on_delete=models.CASCADE)
+    name = models.CharField(max_length=256)
+    value = models.CharField(max_length=256)
+
+    def __str__(self):
+        return '%s / %s=%s' % (self.deployment.name, self.name, self.value)
 
 
 class VirtualMachine(models.Model):
@@ -67,3 +86,16 @@ class VirtualMachine(models.Model):
     deployment_start = models.DateTimeField()
     deployment_finish = models.DateTimeField()
     deployment_duration = models.IntegerField()
+    api_request = models.TextField(null=True)
+    api_response = models.TextField(null=True)
+    successful = models.BooleanField(default=False)
+
+
+class Events(models.Model):
+    """
+    This class maintains events from the deployment process
+    """
+    deployment = models.ForeignKey(Deployment, on_delete=models.CASCADE)
+    virtualmachine = models.ForeignKey(VirtualMachine, on_delete=models.CASCADE)
+    event = models.CharField(max_length=100)
+    message = models.CharField(max_length=256)

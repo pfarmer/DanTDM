@@ -1,0 +1,9 @@
+{% if deployment_list %}
+    <ul>
+        {% for deployment in deployment_list %}
+        <li><a href="{% url 'deployment:detail' deployment.id %}">{{ deployment.name }}</a></li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No Deployment available</p>
+{% endif %}

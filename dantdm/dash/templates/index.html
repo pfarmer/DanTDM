@@ -1,0 +1,176 @@
+{% extends "base_site.html" %}
+
+{% block title %} Dashboard 1 {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock stylesheets %}
+
+{% block content %}
+  <div class="right_col" role="main">
+    <!-- top tiles -->
+    <div class="row tile_count">
+      <div class="col-md-3 col-sm-6 col-xs-9 tile_stats_count">
+        <span class="count_top"><i class="fa fa-cog"></i> Total Deployments</span>
+        <div class="count">{{ deployments }}</div>
+      </div>
+      <div class="col-md-3 col-sm-6 col-xs-9 tile_stats_count">
+        <span class="count_top"><i class="fa fa-clock-o"></i> Average VM Deployment Time</span>
+        <div class="count">123.50</div>
+      </div>
+      <div class="col-md-3 col-sm-6 col-xs-9 tile_stats_count">
+        <span class="count_top"><i class="fa fa-desktop green"></i> Total VM Deployed</span>
+        <div class="count green">2,500</div>
+      </div>
+      <div class="col-md-3 col-sm-6 col-xs-9 tile_stats_count">
+        <span class="count_top"><i class="fa fa-desktop red"></i> Total VM Deployed Failures</span>
+        <div class="count red">25</div>
+      </div>
+    </div>
+    <!-- /top tiles -->
+
+    <div class="row">
+
+      <div class="col-md-4 col-sm-4 col-xs-12">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Recent Activities</h2>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <div class="dashboard-widget-content">
+              <ul class="list-unstyled timeline widget">
+                <li>
+                  <div class="block">
+                    <div class="block_content">
+                      <h2 class="title">
+                        <a>Starting VM deployment</a>
+                      </h2>
+                      <div class="byline">
+                        <span>1 minute ago</span>
+                      </div>
+                      <p>Starting VM deployment for Initial Test</p>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="block">
+                    <div class="block_content">
+                      <h2 class="title">
+                        <a>Starting VM deployment</a>
+                      </h2>
+                      <div class="byline">
+                        <span>1 minute ago</span>
+                      </div>
+                      <p>Starting VM deployment for Initial Test</p>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="block">
+                    <div class="block_content">
+                      <h2 class="title">
+                        <a>Starting VM deployment</a>
+                      </h2>
+                      <div class="byline">
+                        <span>1 minute ago</span>
+                      </div>
+                      <p>Starting VM deployment for Initial Test</p>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="block">
+                    <div class="block_content">
+                      <h2 class="title">
+                        <a>Starting VM deployment</a>
+                      </h2>
+                      <div class="byline">
+                        <span>1 minute ago</span>
+                      </div>
+                      <p>Starting VM deployment for Initial Test / Interoute CS</p>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-8 col-sm-8 col-xs-12">
+
+        <div class="row">
+
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+              <div class="x_title">
+                <h2>Current Status</h2>
+                <div class="clearfix"></div>
+              </div>
+              <div class="x_content">
+                <div class="dashboard-widget-content">
+                  <div class="col-md-4 hidden-small">
+                    <h2 class="line_30">125.7k Views from 60 countries</h2>
+
+                    <table class="countries_list">
+                      <tbody>
+                        <tr>
+                          <td>United States</td>
+                          <td class="fs15 fw700 text-right">33%</td>
+                        </tr>
+                        <tr>
+                          <td>France</td>
+                          <td class="fs15 fw700 text-right">27%</td>
+                        </tr>
+                        <tr>
+                          <td>Germany</td>
+                          <td class="fs15 fw700 text-right">16%</td>
+                        </tr>
+                        <tr>
+                          <td>Spain</td>
+                          <td class="fs15 fw700 text-right">11%</td>
+                        </tr>
+                        <tr>
+                          <td>Britain</td>
+                          <td class="fs15 fw700 text-right">10%</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div id="world-map-gdp" class="col-md-8 col-sm-12 col-xs-12" style="height:230px;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super}}
+  <!-- Chart.js -->
+  <script src="/static/vendors/Chart.js/dist/Chart.min.js"></script>
+  <!-- gauge.js -->
+  <script src="/static/vendors/gauge.js/dist/gauge.min.js"></script>
+  <!-- Skycons -->
+  <script src="/static/vendors/skycons/skycons.js"></script>
+  <!-- Flot -->
+  <script src="/static/vendors/Flot/jquery.flot.js"></script>
+  <script src="/static/vendors/Flot/jquery.flot.pie.js"></script>
+  <script src="/static/vendors/Flot/jquery.flot.time.js"></script>
+  <script src="/static/vendors/Flot/jquery.flot.stack.js"></script>
+  <script src="/static/vendors/Flot/jquery.flot.resize.js"></script>
+  <!-- Flot plugins -->
+  <script src="/static/vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+  <script src="/static/vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
+  <script src="/static/vendors/flot.curvedlines/curvedLines.js"></script>
+  <!-- DateJS -->
+  <script src="/static/vendors/DateJS/build/date.js"></script>
+  <!-- JQVMap -->
+  <script src="/static/vendors/jqvmap/dist/jquery.vmap.js"></script>
+  <script src="/static/vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+  <script src="/static/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
+{% endblock javascripts %}

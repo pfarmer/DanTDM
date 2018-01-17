@@ -26,12 +26,13 @@ SECRET_KEY = 'tvj$v883$oj(ry0cq(ca5s(7s$g+ov(jpd+pu!9#3qxy9_d(9k'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['10.251.0.10:8000', '10.251.0.10']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'dash.apps.DashConfig',
     'deployment.apps.DeploymentConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -120,3 +121,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+    '/vagrant/dantdm/static',
+]
+
+print(BASE_DIR)
