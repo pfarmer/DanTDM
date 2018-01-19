@@ -11,4 +11,6 @@ Vagrant.configure("2") do |config|
 
     config.vm.synced_folder ".", "/vagrant", :nfs => true
 
+    config.vm.provision "shell", path: "prov.sh"
+
 end

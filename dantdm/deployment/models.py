@@ -51,12 +51,13 @@ class Deployment(models.Model):
     created = models.DateTimeField('date created')
     start_date = models.DateTimeField('start date and time')
     started = models.BooleanField(default=False)
-    num_vms = models.IntegerField(default=100)
-    vm_count = models.IntegerField(default=0)
-    duration = models.IntegerField(default=0)
+    num_vms = models.IntegerField(default=100)  # How many VMs to deploy
+    vm_count = models.IntegerField(default=0)  # How many VMs have been deployed
+    duration = models.IntegerField(default=0)  # Total amount of time the deployment took
     avg_deployment_time = models.IntegerField(default=0)
     ready = models.BooleanField(default=False)
     complete = models.BooleanField(default=False)
+    concurrent = models.IntegerField(default=10)
 
     def __str__(self):
         return '%s / %s / %s' % (self.name, self.endpoint.name, self.endpoint.endpoint_type)
@@ -84,18 +85,26 @@ class VirtualMachine(models.Model):
     complete = models.BooleanField(default=False)
     async_job = models.CharField(max_length=36)
     deployment_start = models.DateTimeField()
-    deployment_finish = models.DateTimeField()
-    deployment_duration = models.IntegerField()
+    deployment_finish = models.DateTimeField(null=True)
+    deployment_duration = models.IntegerField(null=True)
     api_request = models.TextField(null=True)
     api_response = models.TextField(null=True)
     successful = models.BooleanField(default=False)
 
+    def __str__(self):
+        return '%s / %s' % (self.name, self.deployment_duration)
 
-class Events(models.Model):
+
+class Event(models.Model):
     """
     This class maintains events from the deployment process
     """
     deployment = models.ForeignKey(Deployment, on_delete=models.CASCADE)
     virtualmachine = models.ForeignKey(VirtualMachine, on_delete=models.CASCADE)
+    created = models.DateField(null=True)
     event = models.CharField(max_length=100)
-    message = models.CharField(max_length=256)
+    message = models.TextField()
+    status_code = models.IntegerField(null=True)
+
+    def __str__(self):
+        return '%s / %s (%s)' % (self.virtualmachine, self.event, self.status_code)

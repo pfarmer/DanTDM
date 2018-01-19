@@ -126,4 +126,91 @@ STATICFILES_DIRS = [
     '/vagrant/dantdm/static',
 ]
 
-print(BASE_DIR)
+# Logging stuffs
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+        'standard': {
+            'format': '%(asctime)s [%(levelname)s] %(name)s:%(lineno)d: %(message)s'
+        },
+    },
+    'handlers': {
+        'null': {
+            'level': 'DEBUG',
+            # 'class': 'logging.NullHandler',
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard'
+        },
+        'default_error': {
+            'level': 'ERROR',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': '%s/logs/error.log' % BASE_DIR,
+            'maxBytes': 1024 * 1024 * 50,  # 50 MB
+            'backupCount': 5,
+            'formatter': 'standard',
+        },
+        'default_info': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': '%s/logs/default.log' % BASE_DIR,
+            'maxBytes': 1024 * 1024 * 100,  # 50 MB
+            'backupCount': 14,
+            'formatter': 'standard',
+        },
+        'default_debug': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': '%s/logs/default-debug.log' % BASE_DIR,
+            'maxBytes': 1024 * 1024 * 100,  # 100 MB
+            'backupCount': 5,
+            'formatter': 'standard',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard'
+        },
+        'request_handler': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': '%s/logs/django_request.log' % BASE_DIR,
+            'maxBytes': 1024 * 1024 * 50,  # 50 MB
+            'backupCount': 5,
+            'formatter': 'standard',
+        },
+    },
+    'loggers': {
+        '': {
+            'handlers': ['default_info', 'default_debug', 'default_error'],
+            'level': 'DEBUG',
+            'propagate': True
+        },
+        'django.request': {  # Stop SQL debug from logging to main logger
+            'handlers': ['request_handler'],
+            'level': 'DEBUG',
+            'propagate': False
+        },
+        'requests.packages.urllib3.connectionpool': {
+            'handlers': ['null'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    }
+}
+
+
+# Celery config
+
+CELERY_BROKER_URL = 'redis://localhost:6379/1'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_HIJACK_ROOT_LOGGER = False
